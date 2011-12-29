@@ -18,11 +18,13 @@ class LibraryModel:
     return os.path.exists(path) and os.path.isdir(path)
   
   def build_music_map(self, path):
-    return None
-#    for root, dirs, files in os.walk(path):
-#      for filename in files:
-#        print filename.endswith('.mp3')
+    for root, dirs, files in os.walk(path):
+      for filename in files:
+        if (filename.endswith('.mp3')):
+          full_path = (root + '/' + filename) #probably won't fly for windows
+#          print os.path.isfile(full_path), full_path
+
 
 library_model = LibraryModel()
 library_data = library_model.get_music_collection('/home/javon/programming/projects/beethoven/music-dir')
-print library_data
+print 'library_data:', library_data

@@ -1,5 +1,5 @@
 from fetcher import *
-#from library import *
+from library import *
 
 #artist = "Dance Gavin Dance"
 #album = "Downtown Battle Mountain"

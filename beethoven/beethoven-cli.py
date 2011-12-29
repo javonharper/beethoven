@@ -1,6 +1,8 @@
 from fetcher import *
 from library import *
+import sys
 import eyeD3
+
 
 # should not assume it's a jpg here
 def write_image_data_to_file(file_data):
@@ -9,8 +11,14 @@ def write_image_data_to_file(file_data):
   f.close()
   return '/tmp/albumart.jpg'
 
+try:
+  root_dir = sys.argv[1]
+except:
+  print 'Usage: beethoven-cli.py <root music directory>'
+  sys.exit()
+
 library = LibraryModel()
-library_data = library.get_music_collection('/home/javon/programming/projects/beethoven/music-dir/')
+library_data = library.get_music_collection(root_dir)
 
 fetcher = AlbumArtFetcher()
 for artist_album in library_data.keys():

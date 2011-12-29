@@ -1,11 +1,5 @@
 import os.path
-
-  # find every file in it that is a (wma, mp3, wav) recursively
-  # get the artist
-  # get the album
-  # get the path
-  # add to a map of the form Map[<artist name>, Map[<album name>, <song path>]]
-  # return this map
+import eyeD3
 
 class LibraryModel:
   def get_music_collection(self, path):
@@ -18,13 +12,21 @@ class LibraryModel:
     return os.path.exists(path) and os.path.isdir(path)
   
   def build_music_map(self, path):
+    dictionary = {}
     for root, dirs, files in os.walk(path):
       for filename in files:
         if (filename.endswith('.mp3')):
           full_path = (root + '/' + filename) #probably won't fly for windows
-#          print os.path.isfile(full_path), full_path
-
-
-library_model = LibraryModel()
-library_data = library_model.get_music_collection('/home/javon/programming/projects/beethoven/music-dir')
-print 'library_data:', library_data
+          # print os.path.isfile(full_path), full_path
+          tag = eyeD3.Tag()
+          tag.link(full_path)
+          artist = tag.getArtist()
+          album = tag.getAlbum()
+          # This may be a dirty hack. if the value of (artist, album) does not exist,
+          # then create an empty list there so it can be used later
+          try:
+            dictionary[(artist, album)]
+          except:
+            dictionary[(artist, album)] = []
+          dictionary[(artist, album)].append(full_path)
+    return dictionary

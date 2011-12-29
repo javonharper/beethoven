@@ -2,6 +2,7 @@ import urllib2
 import simplejson
 
 class AlbumArtFetcher:
+  # Google Image API search, return results in json formatted text
   def search_albumart(self, artist, album):
     search_term = artist + ' ' + album
     search_term = search_term.lower()
@@ -15,6 +16,7 @@ class AlbumArtFetcher:
   def result_is_ok(self, result):
     return result['responseStatus'] == 200 #Status OK
 
+  # Gets the data of album art file, along with width and height
   def get_image_metadata(self, result):
     search_results = result['responseData']['results']
     metadata = []
@@ -26,6 +28,7 @@ class AlbumArtFetcher:
         metadata.append((image_data, dims))
     return metadata
 
+  # Retrieves the image from the actual host, provided they don't block us
   def get_file_from_url(self, url):
     req = urllib2.Request(url, headers = { 'User Agent': 'Beethoven Album Art Fetcher' })
     image_data = None

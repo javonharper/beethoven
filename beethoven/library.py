@@ -11,13 +11,15 @@ class LibraryModel:
   def music_directory_is_valid(self, path):
     return os.path.exists(path) and os.path.isdir(path)
   
+  #recursively builds a dictionary given a root directory
+  # dictionary is of form (artist, album) -> [list of files that belong to that artist and album]
   def build_music_map(self, path):
     dictionary = {}
     for root, dirs, files in os.walk(path):
       for filename in files:
+        # only support mp3s for now
         if (filename.endswith('.mp3')):
           full_path = (root + '/' + filename) #probably won't fly for windows
-          # print os.path.isfile(full_path), full_path
           tag = eyeD3.Tag()
           tag.link(full_path)
           artist = tag.getArtist()
@@ -28,5 +30,6 @@ class LibraryModel:
             dictionary[(artist, album)]
           except:
             dictionary[(artist, album)] = []
+          # Add the new file to the list of songs that belong to (album, artist)
           dictionary[(artist, album)].append(full_path)
     return dictionary

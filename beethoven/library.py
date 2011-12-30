@@ -19,7 +19,7 @@ class LibraryModel:
       for filename in files:
         # only support mp3s for now
         if (filename.endswith('.mp3')):
-          full_path = (root + '/' + filename) #probably won't fly for windows
+          full_path = os.path.join(root, filename)
           tag = eyeD3.Tag()
           tag.link(full_path)
           artist = tag.getArtist()

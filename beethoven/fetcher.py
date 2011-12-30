@@ -7,6 +7,7 @@ class AlbumArtFetcher:
     search_term = artist + ' ' + album
     search_term = search_term.lower()
     search_term = search_term.replace(' ', '+')
+    search_term = search_term.replace('&', '%26') # there's probably a library I can use the ecapes other characters as well
     url = 'https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q={0}'.format(search_term)
     request = urllib2.Request(url, None, {'Referer': 'Beethoven Album Art Fetcher'})
     response = urllib2.urlopen(request)

@@ -1,15 +1,15 @@
 from fetcher import *
 from library import *
 import sys
+import tempfile
 import eyeD3
 
-
-# should not assume it's a jpg here
 def write_image_data_to_file(file_data):
-  f = open('/tmp/albumart.jpg', 'w')
-  f.write(file_data)
-  f.close()
-  return '/tmp/albumart.jpg'
+ # Should not assume image is a jpg, workaround because eyed3 can't guess mimetype
+ f = tempfile.NamedTemporaryFile(suffix = '.jpg', delete = False)
+ f.write(file_data)
+ f.close()
+ return f
 
 try:
   root_dir = sys.argv[1]
@@ -22,22 +22,21 @@ library = LibraryModel()
 library_data = library.get_music_collection(root_dir)
 
 fetcher = AlbumArtFetcher()
-for artist_album in library_data.keys():
-  artist = artist_album[0]
-  album = artist_album[1]
+for artist, album in library_data.keys():
   print 'fetching album art for artist:', artist, 'album:', album
   # Get the image data and dimensions for each album artist combo
   data = fetcher.get_art_and_dims(artist, album)
   # Because library data is of the form (album, artist) =>[array of filenames],
   # we can iterate through each file and set the album art tag
-  for filepath in library_data[artist_album]:
+  for filepath in library_data[(artist, album)]:
     tag = eyeD3.Tag()
     tag.link(filepath)
     tag.removeImages()
     # Since cli version will be a little less versitile, always grab the 
     # first result (second [0] is getting the art from the (art, (width, height)) tuple)
-    art_file_path = write_image_data_to_file(data[0][0])
-    tag.addImage(eyeD3.ImageFrame.FRONT_COVER, art_file_path)
+    album_art_file = write_image_data_to_file(data[0][0])
+    tag.addImage(eyeD3.ImageFrame.FRONT_COVER, album_art_file.name)
+    os.unlink(album_art_file.name)
     try:
       tag.update()
     except:

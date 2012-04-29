@@ -1,5 +1,0 @@
-Always assumes the file is a jpg
-  was workaround because eyed3 just had to know the mimetype
-
-Always clears any existing album art
-  may not really be an issue

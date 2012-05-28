@@ -4,7 +4,4 @@ Beethoven is a python application that fetches album art from the Internet and s
 The name is a play on the famous classical composer Ludwig van Beethoven and Beethoven the beloved mischievous dog.
 
 How Do I Use it:
-python beethoven-cli.py <root music directory>
-
-Coming soon: 
-gui application!
+python beethoven.py <root music directory>

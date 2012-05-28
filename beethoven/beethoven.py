@@ -14,7 +14,7 @@ def write_image_data_to_file(file_data):
 try:
   root_dir = sys.argv[1]
 except:
-  print 'Usage: beethoven-cli.py <root music directory>'
+  print 'Usage: beethoven.py <root music directory>'
   sys.exit()
 
 #Use root directory to recursively find all mp3 files

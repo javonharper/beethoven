@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from fetcher import *
 from library import *
 import sys

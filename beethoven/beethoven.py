@@ -32,17 +32,18 @@ for artist, album in library_data.keys():
   data = fetcher.get_art_and_dims(artist, album)
   # Because library data is of the form (album, artist) =>[array of filenames],
   # we can iterate through each file and set the album art tag
-  for filepath in library_data[(artist, album)]:
-    tag = eyeD3.Tag()
-    tag.link(filepath)
-    tag.removeImages()
-    album_art_file = write_image_data_to_file(data[selected_index][0])
-    tag.addImage(eyeD3.ImageFrame.FRONT_COVER, album_art_file.name)
-    os.unlink(album_art_file.name)
-    try:
-      tag.update()
-      art_verification_url = data[selected_index][2]
-    except:
-      print 'Could not update album art tag for', filepath 
+  if (len(data) > 1):
+      for filepath in library_data[(artist, album)]:
+        tag = eyeD3.Tag()
+        tag.link(filepath)
+        tag.removeImages()
+        album_art_file = write_image_data_to_file(data[selected_index][0])
+        tag.addImage(eyeD3.ImageFrame.FRONT_COVER, album_art_file.name)
+        os.unlink(album_art_file.name)
+        try:
+          tag.update()
+          art_verification_url = data[selected_index][2]
+        except:
+          print 'Could not update album art tag for', filepath 
   print 'Setting  album art for artist:', artist, 'album:', album, 'as', art_verification_url
 print 'Done.'

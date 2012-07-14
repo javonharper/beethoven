@@ -17,8 +17,7 @@ class LibraryModel:
     dictionary = {}
     for root, dirs, files in os.walk(path):
       for filename in files:
-        # only support mp3s for now
-        if (filename.endswith('.mp3')):
+        if (filename.endswith('.mp3') or filename.endswith('.m4a')):
           full_path = os.path.join(root, filename)
           tag = eyeD3.Tag()
           tag.link(full_path)
